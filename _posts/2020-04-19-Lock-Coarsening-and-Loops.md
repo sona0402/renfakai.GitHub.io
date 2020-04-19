@@ -2,9 +2,9 @@
 author: shipilev
 layout: post
 title: 翻译JVM Anatomy Quark #1: Lock Coarsening and Loops
-date: 2020-04-18
-categories: jvm
-tags: [java，jvm]
+date: 2020-04-19
+categories: concurrent
+tags: [java，concurrent]
 description:  翻译一些自己喜欢的文章，由于能力有限，敬请见谅，此章节主要为左耳听风79节练级。
 ---
 
