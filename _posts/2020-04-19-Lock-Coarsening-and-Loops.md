@@ -1,7 +1,7 @@
 ---
 author: Mahmoud Anouti
 layout: post
-title: 翻译Introduction to Java Bytecode
+title: 翻译JVM Anatomy Quark #1: Lock Coarsening and Loops
 date: 2020-04-18
 categories: jvm
 tags: [java，jvm]
@@ -84,7 +84,7 @@ public class LockRoach {
 这里有一些中能够逃的技巧：    
 1.使用-XX禁用偏向锁定:-UseBiasedLocking避免长时间预热，因为偏置锁定不会立即启动，在初始化的5秒后开始启动（请参考BiasedLockingStartupDelay选项）  
 2.禁用@Benchmark方法内联有助于在反汇编中将其分开。  
-3.加一个魔数，0x42有助于快速找到反汇编中的增量。  
+3.加一个魔数，0x42有助于快速找到反汇编中的加法。  
   
 Running at i7 4790K, Linux x86_64, JDK EA 9b156:  
   
@@ -118,8 +118,8 @@ Running at i7 4790K, Linux x86_64, JDK EA 9b156:
 
 ```
   
-嗯，循环似乎展开了4次，然后在这4次迭代中加了粗锁！好的，如果这种情况是由于循环展开而发生的，
-我们可以量化这种有限的粗化对性能的好处，但是可以使用-XX：LoopUnrollLimit = 1来减少展开：    
+嗯，循环似乎展开了4次，然后在这4次迭代中加了粗锁！为了排除循环展开对锁粗化的影响，
+我们可以量化这种有限的粗化对性能的好处，可以使用-XX：LoopUnrollLimit = 1来减少展开：    
   
 ```java 
 
