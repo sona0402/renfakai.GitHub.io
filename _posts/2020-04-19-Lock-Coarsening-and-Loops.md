@@ -1,5 +1,5 @@
 ---
-author: Mahmoud Anouti
+author: @shipilev
 layout: post
 title: 翻译JVM Anatomy Quark #1: Lock Coarsening and Loops
 date: 2020-04-18
