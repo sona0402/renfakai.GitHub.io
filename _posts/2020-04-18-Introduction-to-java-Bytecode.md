@@ -72,15 +72,17 @@ PC寄存器：对于Java程序的每一个运行的线程，PC寄存器都存储
 ![avatar](/img/20200418/method_area.png)   
 
 JVM栈由栈帧组成，当方法调用时候推入栈帧，并在方法完成时（通过正常返回或引发异常）从堆栈中弹出。每个栈帧还包括:    
-1.局部变量表，索引从0~length-1，长度有编辑器计算，局部向量表可以保存任意类型，但是long和double除外，因为它占两个位置。  
+1.局部变量表，索引从0~length-1，长度由编辑器计算，局部向量表可以保存任意类型，但是long和double除外，因为它占两个位置。  
 2.一个操作栈用于储存用于存储用作指令的操作数，将参数推送到方法调用。  
 ![avatar](/img/20200418/stack_frame_zoom.png)   
 
 ###  字节码探索
-关于JVM内部想法，我们可以看一些字节码基础案例，这些案例生成于简单的代码。在Java class 文件中每一个访达都会有一些代码段，
+关于JVM内部想法，我们可以看一些字节码基础案例，这些案例生成于简单代码。在Java class 文件中每一个访达都会有一些代码段，
 它包含一系列的指令集，主要包含以下格式:  
 
+```
 opcode (1 byte)      operand1 (optional)      operand2 (optional)      ...     
+```
 
 该指令由一个字节的操作码和零个或多个包含要操作的数据去操作。  
 
@@ -101,50 +103,63 @@ opcode (1 byte)      operand1 (optional)      operand2 (optional)      ...
 And we get:  
 
  ```
- 1  public static void main(java.lang.String[]);
- 2  descriptor: ([Ljava/lang/String;)V
- 3  flags: (0x0009) ACC_PUBLIC， ACC_STATIC
- 4  Code:
- 5  stack=2， locals=4， args_size=1
- 6  0: iconst_1
- 7  1: istore_1
- 8  2: iconst_2
- 9  3: istore_2
- 10 4: iload_1
- 11 5: iload_2
- 12 6: iadd
- 13 7: istore_3
- 14 8: return
+   public static void main(java.lang.String[]);
+   descriptor: ([Ljava/lang/String;)V
+   flags: (0x0009) ACC_PUBLIC， ACC_STATIC
+   Code:
+   stack=2， locals=4， args_size=1
+   0: iconst_1
+   1: istore_1
+   2: iconst_2
+   3: istore_2
+   4: iload_1
+   5: iload_2
+   6: iadd
+   7: istore_3
+   8: return
  ...
 ```
   
 我们能看到主方法的签名，形容和表明方法需要一个字符串数组([Ljava/lang/String; )，并且有一个返回类型(V )。  
 后续有一系列的方法形容，例如公有的(ACC_PUBLIC)和静态的(ACC_STATIC)。     
 
-更重要的部分是代码，它包含了方法的说明和信息，例如操作数栈的最大深度(这种情况下为2，stack=2)，和一定数量的局部变量表被分配在栈帧中(locals=4)，
+更重要的部分是代码，它包含了方法的说明和信息，例如操作数栈的最大深度(stack=2)，和一定数量的局部变量表被分配在栈帧中(locals=4)，
 以上指令引用了上面的除0索引外的所有位置，它包含了参数的引用，其他3个局部变量对应源码中的参数a，b，c。       
 
 从0-8的指令集操作如下:  
-
+    
 iconst_1: 推送常数1到操作数栈。  
-![avatar](/img/20200418/iconst_12.png)  
-istore_1: 从操作数栈推出(一个int值)并储存到局部变量表索引1处，它对应的是变量a。    
+  
+![avatar](/img/20200418/iconst_12.png) 
+   
+istore_1: 从操作数栈推出(一个int值)并储存到局部变量表索引1处，它对应的是变量a。   
+   
 ![avatar](/img/20200418/istore_11.png)  
-iconst_2: 推送数字常量2到操作数栈。    
+  
+iconst_2: 推送数字常量2到操作数栈。  
+    
 ![avatar](/img/20200418/iconst_2.png)  
-istore_2: 从操作数栈推出int并储存到局部变量索引2，它对应向量b。  
+  
+istore_2: 从操作数栈推出int并储存到局部变量索引2，它对应向量b。
+    
 ![avatar](/img/20200418/istore_2.png)   
-iload_1: 将第二个int型本地变量推送至栈顶   
+  
+iload_1: 将第二个int型本地变量推送至栈顶。
+    
 ![avatar](/img/20200418/iload_1.png)  
-
+  
 **iload_2 将第三个int型本地变量推送至栈顶**  
 **这里请注意原文与原图不符**  
-![avatar](/img/20200418/iload_2.png)  
-iadd: 将栈顶两int型数值相加并将结果压入栈顶。  
+
+![avatar](/img/20200418/iload_2.png) 
+   
+iadd: 将栈顶两int型数值相加并将结果压入栈顶。
+    
 ![avatar](/img/20200418/iload_2.png)   
 
-istore_3: 从操作数栈推出int并储存到局部变量索引3，它对应向量c。 
-![avatar](/img/20200418/istore_3.png)  
+istore_3: 从操作数栈推出int并储存到局部变量索引3，它对应向量c。
+ 
+![avatar](/img/20200418/istore_3.png)    
 
 return: 从void方法返回。  
 
@@ -214,10 +229,12 @@ invokestatic包含两个额外的字节构造方法引用(额外的操作码)。
 下一个指令，i2d，扩大它的范围将它转换成一个double，并将结果推到操作数栈顶。  
 
 下一个指令推送一个double常量2.0d(从常量池获取)到操作数栈，然后使用操作数栈准备的两个操作数值调用Math.pow静态方法(calc的第一个参数和常量2.0d)，
-当Math.pow方法返回，它的结果会被储存到调用程序的操作数栈中，可以在下面说。  
+当Math.pow方法返回，它的结果会被储存到调用程序的操作数栈中，可以在下面说。 
+   
 ![avatar](/img/20200418/math_pow2.png)  
 
 相同的过程适用于计算Math.pow（b，2）:  
+  
 ![avatar](/img/20200418/math_pow21.png)  
 
 下一个指令，dadd，推出两个中间结果，进行相加，并将结果退回到栈顶，最终，静态调用调用数学平方，然后使用缩小转换（d2i）将结果从double转换为int。
@@ -282,15 +299,19 @@ public static void main(java.lang.String[]);
 
 dup指令复制操作数栈顶的值，这意味着现在我们堆栈顶部有两个Point对象。
 接下来的三条指令将构造函数的参数（用于初始化对象）压入操作数堆栈，然后调用与构造函数相对应的特殊初始化方法，
-下一个方法是将字段x和y初始化。方法完成后，将使用前三个操作数堆栈值，剩下的就是对创建对象的原始引用（到目前为止，该对象已成功初始化）。  
+下一个方法是将字段x和y初始化。方法完成后，将使用前三个操作数堆栈值，剩下的就是对创建对象的原始引用（到目前为止，该对象已成功初始化）。 
+   
 ![avatar](/img/20200418/init.png)  
-接下来，astore_1弹出该Point引用并将其分配给索引1处的局部变量（astore_1中的a表示这是一个引用值）。  
+  
+接下来，astore_1弹出该Point引用并将其分配给索引1处的局部变量（astore_1中的a表示这是一个引用值）。
+  
 ![avatar](/img/20200418/init_store.png)  
+  
 重复相同的创建和初始化Point，并将它赋于到b。   
-
+  
 ![avatar](/img/20200418/init2.png)  
 ![avatar](/img/20200418/init_store2.png)  
-
+  
 最后一步加载两个Point对象引用到局部变量表索引1和2处(分别使用aload_1和aload_2)，
 并且使用invokevirtual调用面积计算方法，它根据对象的实际类型处理将调用分配给适当的方法。
 例如，如果变量a包含扩展Point的SpecialPoint类型的实例，并且子类型覆盖area方法，则将调用重写方法。
