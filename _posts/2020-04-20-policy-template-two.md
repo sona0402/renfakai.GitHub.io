@@ -163,8 +163,8 @@ public final class TwoPolicyManager {
 ```
 
 如果HelloRequest是从数据库获取的，你可以在Service层调用，可以返回特定结果，你发现好像一切都变好了，
-但是你发现 ` ThreePolicyManager.register("world", this);` 好像每个实现类都需要写一遍，好累赘，
-是不是否好方法解决它呢，想了想注解+枚举是个不错的方案，可以解决key冲突问题和代码量减少。  
+但是你发现 `ThreePolicyManager.register("world", this);` 好像每个实现类都需要写一遍，好累赘，
+是不是有好方法解决它呢，想了想注解+枚举+适配器是个不错的方案，可以解决key冲突问题和减少代码量。  
 
 枚举代码和注解如下:  
 
@@ -178,7 +178,7 @@ public enum PolicyEnum {
 
     WORLD("world", "worldPolicy"),
 
-    NIL("nil", "NilPolicy"),
+    NIL("Nil", "NilPolicy"),
 
     ;
 
@@ -219,7 +219,7 @@ public abstract class ThreePolicyAdapt implements ThreePolicyService {
 
 ```
 
-实现类改变成了下面的样子：
+实现类变成了下面的样子：
 
 ```java
 
@@ -254,7 +254,7 @@ public class NilThreePolicyServiceImpl extends ThreePolicyAdapt {
 
 ```
 
-现在如果需要增加策略,只需要增加一个类，继承ThreePolicyAdapt，并在实现上增加一个注解，就ok。  
+现在需要增加策略,只需要增加一个类，继承ThreePolicyAdapt，并在实现上增加一个注解，就ok。  
 缺点:每次都需要在枚举类中增加一个类型` HELLO("hello", "helloPolicy")`。
 
 如果不想增加适配器，使用Spring特性又如何解决上面的问题呢？
@@ -278,6 +278,6 @@ public class SpringThreePolicyManager implements BeanPostProcessor {
 
 ```
 
-缺点，如果上面管理器很多，需要实现很多钩子，然后给你个眼神你体会一下吧，怎么抉择取决玉你。
+缺点:如果上面管理器很多，需要很多钩子，然后给你个眼神你体会一下吧，怎么抉择取决于你。
 也许你的策略有优先级，又该怎么办呢？
 
