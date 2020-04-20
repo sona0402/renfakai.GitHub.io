@@ -255,6 +255,6 @@ Response code: 200; Time: 53ms; Content length: 8 bytes
 
 ```
 
-但是我们发现好像问题没有解决，只是把Service问题转移到了Controller，因为添加一个策略我们都需要添加一个控制器。  
+但是我们发现好像问题没有解决，只是把Service问题转移到了Controller，添加一个策略我们都需要添加一个控制器，无法根据数据进行动态选择策略。  
 下一章我们将用策略(多态)+享元模式解决这个问题。
  
