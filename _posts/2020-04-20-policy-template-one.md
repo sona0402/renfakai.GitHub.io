@@ -23,6 +23,18 @@ description: policy 。
 
 ```
 
+先看一眼dto:
+```java 
+
+@Data
+public class HelloRequest {
+
+    private String policy;
+
+    private String name;
+}
+
+```
 让我门来看一下Controller代码:  
 
 ```java
@@ -72,7 +84,7 @@ public class OtherServiceImpl implements OtherService {
 
 ```
 
-然后进行测试，完全符合逾期，测试结果如下:
+然后进行测试，完全符合预期，测试结果如下:
 
 ```java 
 
@@ -128,7 +140,7 @@ Response code: 200; Time: 56ms; Content length: 8 bytes
 
 ```
 
-然后想了想，我怎么把Java的多态丢了，好像是这个样子，然后你进行了重构。
+我怎么把Java的多态丢了，好像是这个样子，然后你进行了重构。
 
 ```javas
 .
@@ -243,6 +255,6 @@ Response code: 200; Time: 53ms; Content length: 8 bytes
 
 ```
 
-但是我们发现好像问题没有解决，只是把Service问题转移到了Controller，因为添加一个策略我们都需要添加一个控制器。
+但是我们发现好像问题没有解决，只是把Service问题转移到了Controller，因为添加一个策略我们都需要添加一个控制器。  
 下一章我们将用策略(多态)+享元模式解决这个问题。
  
