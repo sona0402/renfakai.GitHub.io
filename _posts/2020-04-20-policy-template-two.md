@@ -213,9 +213,12 @@ public abstract class ThreePolicyAdapt implements ThreePolicyService {
     @Override
     public void afterPropertiesSet() throws Exception {
         PolicyEnum cpcnHandlerType = this.getClass().getAnnotation(PolicyType.class).value();
-        ThreePolicyManager.register(cpcnHandlerType.getCode(), this);
+        if (Objects.nonNull(cpcnHandlerType)) {
+            ThreePolicyManager.register(cpcnHandlerType.getCode(), this);
+        }
     }
 }
+
 
 ```
 
@@ -255,10 +258,9 @@ public class NilThreePolicyServiceImpl extends ThreePolicyAdapt {
 ```
 
 现在需要增加策略,只需要增加一个类，继承ThreePolicyAdapt，并在实现上增加一个注解，就ok。  
-缺点:每次都需要在枚举类中增加一个类型` HELLO("hello", "helloPolicy")`。
+缺点:每次都需要在枚举类中增加一个类型 HELLO("hello", "helloPolicy") 。
 
-如果不想增加适配器，使用Spring特性又如何解决上面的问题呢？
-使用Spring初始化bean的钩子。
+如果不想增加适配器，使用Spring特性又如何解决上面的问题呢？使用Spring初始化bean的钩子。 
 
 ```
 @Component
