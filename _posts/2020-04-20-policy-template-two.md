@@ -212,12 +212,13 @@ public abstract class ThreePolicyAdapt implements ThreePolicyService {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        PolicyEnum cpcnHandlerType = this.getClass().getAnnotation(PolicyType.class).value();
-        if (Objects.nonNull(cpcnHandlerType)) {
-            ThreePolicyManager.register(cpcnHandlerType.getCode(), this);
+        PolicyType annotation = this.getClass().getAnnotation(PolicyType.class);
+        if (Objects.nonNull(annotation)) {
+            ThreePolicyManager.register(annotation.value().getCode(), this);
         }
     }
 }
+
 
 
 ```
@@ -281,5 +282,5 @@ public class SpringThreePolicyManager implements BeanPostProcessor {
 ```
 
 缺点:如果上面管理器很多，需要很多钩子，然后给你个眼神你体会一下吧，怎么抉择取决于你。
-也许你的策略有优先级，又该怎么办呢？
 
+### [Github地址](https://github.com/sona0402/Polymorphism)
