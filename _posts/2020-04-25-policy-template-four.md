@@ -109,7 +109,7 @@ public class NilFourPolicyServiceImpl implements FourPolicyService {
 
 ```
 
-Bean如果实现了BeanNameAware，在Bean生命周期中可以设定Bean(void setBeanName(String name))的名称，这里不建议使用，
+Bean如果实现了BeanNameAware，在Bean生命周期中可以设定Bean的名称(void setBeanName(String name))，这里不建议使用，
 使用Spring规约(类似Springboot规约大于配置一样)，这样的话Service名称为Class名称第一个字母小写，根据这一规则创建映射:  
 
 ```java  
@@ -216,9 +216,8 @@ public class ApplicationContextProviderSetter implements ApplicationContextAware
 ### 总结
 
 优点: 不需要编写额外的代码对Bean进行保存，使用的时候按照规约从ApplicationContext获取。  
-缺点:  
- * 使用BeanName获取Bean的时候需要进行强转，不如自己编写容器获取看起来更加优雅。
- * 需要在测试阶段测试出BeanName-helloFourPolicyServiceImpl(HELLO("hello", "helloFourPolicyServiceImpl"))是否正确。
+缺点: 使用BeanName获取Bean的时候需要进行强转，不如自己编写容器获取看起来更加优雅。  
+     需要在测试阶段测试出BeanName-helloFourPolicyServiceImpl(HELLO("hello", "helloFourPolicyServiceImpl"))是否正确。
 
 提示:如果在创表初期，可以直接将ServiceImpl名称存到数据库，如果业务已经开展，多方使用，字断不可更改，而且不想增加字断的话，需要在代码中增加映射，请大家酌情处理。  
 
