@@ -1,11 +1,15 @@
 ---
 layout: page
 title: "About"
-description: "你的博客描述 " 
+description: "Luck" 
 header-img: "img/green.jpg"
 ---
 
-这一页填写你的自我介绍。
+## 个人介绍
+name:renfakai  
+mail:rfk1118@gmail.com
+weChat:duiwei395
+Github:https://github.com/sona0402
 
 
 
