@@ -16,6 +16,9 @@ description: 读源码
 1. Rcc的主方法，需要传递`zookeeper.jute`文件的位置。
 
 ```java
+ // args = -l c "/Users/renfakai/github/gcc/zookeeper.jute"  生成c语言
+ // args = -l c++ "/Users/renfakai/github/gcc/zookeeper.jute"  生成c++
+ // args = "/Users/renfakai/github/gcc/zookeeper.jute" 生成Java
  public static void main(String args[]) {
         // 默认语言
         String language = "java";
