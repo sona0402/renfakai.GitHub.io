@@ -1,7 +1,7 @@
 ---
 author: renfakai
 layout: post
-title: 原创-Zookeeper-zookeeper.jute基础代码生成
+title: 原创-zookeeper.jute基础代码生成
 date: 2020-05-14
 categories: zookeeper
 tags: [java，zookeeper]
