@@ -14,16 +14,16 @@ description: 读源码
 混沌工程对应用分类
 
 - 操作Application内部，对字节码进行操作，实现OOM，延迟。<br/>
-    ```
+```
         1.alibaba  sandbox
         2.de.codecentric.spring.boot.chaos.monkey
-    ```
+```
 * 操作容器和容器环境，主要是对容器网卡，cpu打满，磁盘满等。
 
-	```
+```
 	1. Netflix Chaos Monkey
 	2. alibaba chaosblade
-	```
+```
 
     [图片来源]: https://zhuanlan.zhihu.com/p/90294032
     ![avatar](/img/chanos/chanos_1.jpg)  
@@ -44,18 +44,18 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
 
    1. **de.codecentric.monkey**使用了Spring特性简化了字节码的操作，其使用spring-boot-auto-config来加载Bean,配置文件如下。
 
-    ```
+```
     /Users/renfakai/.m2/repository/de/codecentric/chaos-monkey-spring-boot/2.0.1/chaos-monkey-spring-boot-2.0.1.jar!/META-INF/spring.factories
     
     org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
       de.codecentric.spring.boot.chaos.monkey.configuration.ChaosMonkeyConfiguration
-    ```
+```
 
    2.配置文件外挂，使用了元数据，可以参考`spring-configuration-metadata.json`,
 
    3.使用了springboot autoconfig
 
-    ```
+```
     .
     ├── META-INF
      └── spring.factories
@@ -65,11 +65,11 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
      org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
       de.codecentric.spring.boot.chaos.monkey.configuration.ChaosMonkeyConfiguration
 
-    ```
+```
 
   4.看下自动化Bean
 
-    ```
+```
     
     
     /** @author Benjamin Wilms */
@@ -242,7 +242,7 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
       }
     }
     
-    ```
+```
 
 5.assaults代码解读,攻击主要分为3类，其符合ocp原则，所以看一个实现即可。
 
@@ -252,7 +252,7 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
 * 请求攻击	继承ChaosMonkeyAssault，实现为ChaosMonkeyRequestAssault子类
 * 延迟攻击  ChaosMonkeyLatencyAssaultExecutor子类
 
-   ```
+```
          public interface ChaosMonkeyAssault {
         
           // 是否启用
@@ -337,12 +337,12 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
               // do nothing
             }
           }
-   ```
+```
   
 
 7.component包
 
-   ```
+```
         .
         // 请求范围配置
         ├── ChaosMonkeyRequestScope.java
@@ -356,11 +356,11 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
         ├── MetricType.java
         // 统计
         └── Metrics.java
-   ```
+```
 
 8.configuration包
 
-   ```
+```
         .
           // 攻击异常
         ├── AssaultException.java
@@ -382,11 +382,11 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
         ├── ChaosMonkeyProperties.java
         ├── ChaosMonkeySettings.java
         └── WatcherProperties.java
-   ```
+```
 
 9.endpoints
 
-   ```
+```
         //  资源文件更新
         ├── AssaultPropertiesUpdate.java
         // jmx开启的话，可以修改文件
@@ -396,21 +396,21 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
         ├── ChaosMonkeySettingsDto.java
         // 修改文件类
         └── WatcherPropertiesUpdate.java
-   ```
+```
 
 10.event
 
-   ```
+```
     
         事件 springevent事件
         .
         └── MetricEvent.java
          
-   ```
+```
 
 11.watcher
 
-   ```
+```
         // 基类
         ├── ChaosMonkeyBaseAspect.java
         // 不同实现，分别支持Spring各个层的处理
@@ -420,12 +420,12 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
         ├── SpringRepositoryAspectJPA.java
         ├── SpringRestControllerAspect.java
         └── SpringServiceAspect.java
-   ```
+```
 
 ![avatar](/img/chanos/ChaosMonkeyBaseAspect.png)  
 
 
-   ```
+```
 
         abstract class ChaosMonkeyBaseAspect {
         
@@ -488,7 +488,7 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
           }
         }
     
-   ```
+```
 
 总结：
 * 整体很简单，支持资源文件配置，也可以使用jms和http动态修改资源文件。
