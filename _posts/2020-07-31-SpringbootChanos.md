@@ -14,15 +14,17 @@ description: 读源码
 混沌工程对应用分类
 
 - 操作Application内部，对字节码进行操作，实现OOM，延迟。<br/>
+
+```shell script
+1.alibaba  sandbox
+2.de.codecentric.spring.boot.chaos.monkey
 ```
-    1.alibaba  sandbox
-    2.de.codecentric.spring.boot.chaos.monkey
-```
+
 * 操作容器和容器环境，主要是对容器网卡，cpu打满，磁盘满等。
 
-```
-	1. Netflix Chaos Monkey
-	2. alibaba chaosblade
+```shell script
+1. Netflix Chaos Monkey
+2. alibaba chaosblade
 ```
 
 [图片来源]: https://zhuanlan.zhihu.com/p/90294032
@@ -44,20 +46,17 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
 
    1. **de.codecentric.monkey**使用了Spring特性简化了字节码的操作，其使用spring-boot-auto-config来加载Bean,配置文件如下。
 
-```
-
+```shell script
 /Users/renfakai/.m2/repository/de/codecentric/chaos-monkey-spring-boot/2.0.1/chaos-monkey-spring-boot-2.0.1.jar!/META-INF/spring.factories
-
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   de.codecentric.spring.boot.chaos.monkey.configuration.ChaosMonkeyConfiguration
-
 ```
 
    2.配置文件外挂，使用了元数据，可以参考`spring-configuration-metadata.json`,
 
    3.使用了springboot autoconfig
 
-```
+```shell script
 .
 ├── META-INF
  └── spring.factories
@@ -66,12 +65,11 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
  spring.factories
  org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   de.codecentric.spring.boot.chaos.monkey.configuration.ChaosMonkeyConfiguration
-
 ```
 
   4.看下自动化Bean
 
-```
+```java
       
 /** @author Benjamin Wilms */
 @Configuration
@@ -253,7 +251,7 @@ public class ChaosMonkeyConfiguration {
 * 请求攻击	继承ChaosMonkeyAssault，实现为ChaosMonkeyRequestAssault子类
 * 延迟攻击  ChaosMonkeyLatencyAssaultExecutor子类
 
-```
+```java
  public interface ChaosMonkeyAssault {
 
   // 是否启用
@@ -343,25 +341,25 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 7.component包
 
-```
-        .
-        // 请求范围配置
-        ├── ChaosMonkeyRequestScope.java
-        // 运行配置范围
-        ├── ChaosMonkeyRuntimeScope.java
-        // 调度线程池
-        ├── ChaosMonkeyScheduler.java
-        // 元数据推送，生产者
-        ├── MetricEventPublisher.java
-        // 元数据类型
-        ├── MetricType.java
-        // 统计
-        └── Metrics.java
+```shell script
+.
+// 请求范围配置
+├── ChaosMonkeyRequestScope.java
+// 运行配置范围
+├── ChaosMonkeyRuntimeScope.java
+// 调度线程池
+├── ChaosMonkeyScheduler.java
+// 元数据推送，生产者
+├── MetricEventPublisher.java
+// 元数据类型
+├── MetricType.java
+// 统计
+└── Metrics.java
 ```
 
 8.configuration包
 
-```
+```shell script
 .
   // 攻击异常
 ├── AssaultException.java
@@ -387,7 +385,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 9.endpoints
 
-```
+```shell script
 //  资源文件更新
 ├── AssaultPropertiesUpdate.java
 // jmx开启的话，可以修改文件
@@ -401,7 +399,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 10.event
 
-```
+```shell script
     
 事件 springevent事件
 .
@@ -411,7 +409,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 11.watcher
 
-```
+```shell script
 
 // 基类
 ├── ChaosMonkeyBaseAspect.java
@@ -428,7 +426,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 ![avatar](/img/chanos/ChaosMonkeyBaseAspect.png)  
 
 
-```
+```java
 
 abstract class ChaosMonkeyBaseAspect {
 
