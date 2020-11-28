@@ -15,14 +15,14 @@ description: 读源码
 
 - 操作Application内部，对字节码进行操作，实现OOM，延迟。<br/>
 
-```shell script
+```java
 1.alibaba  sandbox
 2.de.codecentric.spring.boot.chaos.monkey
 ```
 
 * 操作容器和容器环境，主要是对容器网卡，cpu打满，磁盘满等。
 
-```shell script
+```java
 1. Netflix Chaos Monkey
 2. alibaba chaosblade
 ```
