@@ -14,17 +14,17 @@ description: 熟悉混沌工程,快速与公司现有业务整合
 ./blade底层依赖sandbox，下面介绍直接通过sandbox来实现演练，如果已经克隆本项目，直接从编译阶段开始即可。
 ### 准备
 - clone
-```shell script
+```java
 git clone https://github.com/chaosblade-io/chaosblade-exec-jvm
 ````
 - 编译
-```shell script
+```java
 cd chaosblade-exec-jvm
 make build
 ```
 - 启动wf服务
 
-```shell script
+```java
  renfakai@renfakaideMacBook-Pro  ~/github/wuxian  jps -lm
 768 org.jetbrains.idea.maven.server.RemoteMavenServer36
 643 
@@ -37,7 +37,7 @@ make build
 
 - 挂载agent： -p 799 是被攻击应用的jvm进程号
 
-```shell script
+```java
 cd ./build-target/chaosblade-0.6.0/lib/sandbox/bin/ && ./sandbox.sh -p 799
 
 # result 
@@ -55,7 +55,7 @@ cd ./build-target/chaosblade-0.6.0/lib/sandbox/bin/ && ./sandbox.sh -p 799
 
 - 激活模块
 
-```shell script
+```java
 ./sandbox.sh -p 799
 
 # result
@@ -69,7 +69,7 @@ total 1 module activated.
 
 - 创建混沌实验
 
-```shell script
+```java
 
 curl -v -X post http://127.0.0.1:49647/sandbox/default/module/http/chaosblade/create -H 'Content-Type:application/json' -d '{"action":"delay","target":"servlet","suid":"1110","time":"3000","requestpath":"/hello"}' | python -m json.tool
 
@@ -108,7 +108,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 编写一个Springboot项目,目录如下:
 
-```shell script
+```java
 ├── HELP.md
 ├── mvnw
 ├── mvnw.cmd
@@ -133,7 +133,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 
 pom.xml如下
 
-```shell script
+```java
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -186,7 +186,7 @@ pom.xml如下
 
 ```
 
-```shell script
+```java
 // 代码
 package com.renfakai.sona;
 
@@ -216,7 +216,7 @@ public class AlibabaChanosApplication {
 
 此时访问Java应用/index应用将延迟3秒后响应，` GET http://localhost:8080/hello` 端口在挂载agent返回，如下
 
-```shell script
+```java
 GET http://localhost:8080/hello
 
 HTTP/1.1 200 
@@ -232,7 +232,7 @@ Response code: 200; Time: 3092ms; Content length: 10 bytes
 
 - 销毁
 
-```shell script
+```java
 curl -X post http://127.0.0.1:49647/sandbox/default/module/http/chaosblade/destroy -H 'Content-Type:application/json' -d '{"action":"delay","target":"servlet","suid":"110"}' | python -m json.tool
 
 # result
@@ -251,7 +251,7 @@ curl -X post http://127.0.0.1:49647/sandbox/default/module/http/chaosblade/destr
 
 - 卸载agent
 
-```shell script
+```java
 ./sandbox.sh -p 799 -S
 
 # result

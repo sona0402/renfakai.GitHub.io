@@ -46,7 +46,7 @@ Application内操作字节码常用方式  alibaba  sandbox介绍
 
    1. **de.codecentric.monkey**使用了Spring特性简化了字节码的操作，其使用spring-boot-auto-config来加载Bean,配置文件如下。
 
-```shell script
+```java
 /Users/renfakai/.m2/repository/de/codecentric/chaos-monkey-spring-boot/2.0.1/chaos-monkey-spring-boot-2.0.1.jar!/META-INF/spring.factories
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   de.codecentric.spring.boot.chaos.monkey.configuration.ChaosMonkeyConfiguration
@@ -56,7 +56,7 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 
    3.使用了springboot autoconfig
 
-```shell script
+```java
 .
 ├── META-INF
  └── spring.factories
@@ -341,7 +341,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 7.component包
 
-```shell script
+```java
 .
 // 请求范围配置
 ├── ChaosMonkeyRequestScope.java
@@ -359,7 +359,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 8.configuration包
 
-```shell script
+```java
 .
   // 攻击异常
 ├── AssaultException.java
@@ -385,7 +385,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 9.endpoints
 
-```shell script
+```java
 //  资源文件更新
 ├── AssaultPropertiesUpdate.java
 // jmx开启的话，可以修改文件
@@ -399,7 +399,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 10.event
 
-```shell script
+```java
     
 事件 springevent事件
 .
@@ -409,7 +409,7 @@ public class LatencyAssault implements ChaosMonkeyRequestAssault {
 
 11.watcher
 
-```shell script
+```java
 
 // 基类
 ├── ChaosMonkeyBaseAspect.java
