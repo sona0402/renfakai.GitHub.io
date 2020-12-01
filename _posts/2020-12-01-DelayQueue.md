@@ -25,11 +25,11 @@ Doug Lea 我心目中的神，凭借一己之力编写了并发包，牛皮，�
      private final transient ReentrantLock lock = new ReentrantLock();
      private final PriorityQueue<E> q = new PriorityQueue<E>();
 
-     // ... 其他代码暂时忽略
+     // 其他代码暂时忽略
 
      // 仅仅这一段代码进行展示
      public int size() {
-    ·
+    
         // 成员变量移到局部变量表
         final ReentrantLock lock = this.lock;
         lock.lock();
