@@ -12,9 +12,10 @@ Doug Lea 我心目中的神，凭借一己之力编写了并发包，牛皮，�
 
 ##  问题
  
- 为什么Doug Lea 喜欢将不可变锁引用放到局部变量里面
+ 为什么Doug Lea 喜欢将不可变锁引用放到局部变量表中?
  
 ### 源代码
+
 本文章使用java.util.concurrent.DelayQueue为案例
 
 ```java
@@ -30,7 +31,7 @@ Doug Lea 我心目中的神，凭借一己之力编写了并发包，牛皮，�
      // 仅仅这一段代码进行展示
      public int size() {
     
-        // 成员变量移到局部变量表
+        // 成员变量内存地址存到局部变量表中
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
@@ -48,6 +49,7 @@ Doug Lea 我心目中的神，凭借一己之力编写了并发包，牛皮，�
 使用自己编写案例，查看字节码
 
 ```java
+
 public class Queue {
 
     private final transient ReentrantLock rt = new ReentrantLock();
@@ -61,8 +63,10 @@ public class Queue {
         }
     }
 }
+
 ```
-使用编译器进行编译，查看未优化之前字节码
+
+使用编译器进行编译，查看未优化之前字节码。
 
 ```java
 
@@ -113,11 +117,14 @@ public class Queue {
 ```
 从上面可以看到每次获取锁的时候，都先从局部变量表里面获取index=0的this进栈后，在获取锁，内容如下
 ```java 
+
               0: aload_0
               1: getfield      #4                  // Field rt:Ljava/util/concurrent/locks/ReentrantLock;
-              4: invokevirtual #5                  // Method java/util/concurrent/locks/ReentrantLock.lock:()V
+
 ```
+
 修改代码，将代码进行修改进行指令集优化
+
 ```java 
 
 public class Queue {
@@ -187,8 +194,8 @@ public class Queue {
         frame_type = 6 /* same */
 
 ```
-从这里发现指令集发生了变化,如下，每次获取锁的时候都使用aload_1从局部变量表里面获取，这里是Doug lea对指令集的优化，HiKariCP也是靠字节码优化提升速度的。
-可以自行查看源码。
+从这里发现指令集发生了变化,如下，每次获取锁的时候都使用aload_1从局部变量表里面获取，这里是Doug lea对指令集的优化。<br/>
+HiKariCP也是靠字节码优化提升速度的,可自行查看源码。
 
 ```java
          0: aload_0
@@ -198,22 +205,33 @@ public class Queue {
          5: aload_1
 
 ```
-
-从这里又出现了两个问题，为何Doug Lea会将锁在方法体内写为final而数据却未写为final。经过google也没找到很好的答案，以下内容仅仅为猜想。
+locals的变化，多占用了一个局部变量表。
 
 ```java
-  // 这里为什么会是final
+   // 优化前
+   stack=2, locals=3, args_size=1
+   // 优化后
+   stack=2, locals=2, args_size=1
+
+```
+
+这里又出现了两个问题，为何Doug Lea会将锁在方法体内写为final,而数据却未写为final。经过google也没找到很好的答案，以下内容仅仅为猜想。
+
+```java
+
+         // 这里为什么会是final
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
-            // 这里的q也是final的，为啥不局部变量话
+            // 这里的q也是final的，为啥不放到局部变量表中
             return q.size();
         } finally {
             lock.unlock();
         }
+
 ```
 
--  局部变量表的重复利用问题，可以参考深入理解虚拟机或[JVM Anatomy Quark #8()](https://shipilev.net/jvm/anatomy-quarks/8-local-var-reachability/)
+-  局部变量表的重复利用问题，可以参考深入理解虚拟机或[JVM Anatomy Quark #8()](https://shipilev.net/jvm/anatomy-quarks/8-local-var-reachability/)<br/>
    Google查到如果局部变量为final,权限变成了ReadOnly access,为了防止局部向量嘈被重复利用问题。
 -  为何这里` private final PriorityQueue<E> q = new PriorityQueue<E>();` 也是final为啥不在局部变量也命名为final,原因`PriorityQueue`不可变，
    但是其底层数据`transient Object[] queue`在扩容时候会变地址(数组特性)。
@@ -241,9 +259,9 @@ public class ReentrantLock implements Lock, java.io.Serializable {
 
 ```
 
-从这里猜，使用了final可能会减少线程缓存数据和主内存数据比较及拉取主内存数据到线程缓存中，也就是经典的内存模型
-可以参考Java并发编程艺术 方腾飞　魏鹏　程晓明著
+从这里猜，使用了final可能会减少线程缓存数据和主内存数据比较及拉取主内存数据到线程缓存中，也就是经典的内存模型。<br/>
+可以参考Java并发编程艺术(方腾飞　魏鹏　程晓明著)
 
 ### 字节码级别优化
-Doug lea大神就是牛逼，无敌的存在，代码看不明白啊。
+Doug lea大神就是牛逼，无敌的存在，代码看不明白啊。<br/>
 著作权归作者所有，商业转载请联系作者获得授权，非商业转载请注明出处。
