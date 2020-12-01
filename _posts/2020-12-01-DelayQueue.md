@@ -61,14 +61,15 @@ public class Queue {
     }
 }
 ```
-- 使用编译器进行编译，查看未优化之前字节码
+使用编译器进行编译，查看未优化之前字节码
+
 ```java
 
       // 编译class
-      javac Queue.java 
+      // javac Queue.java 
 
       // 查看字节码
-      javap -p -v Queue
+      // javap -p -v Queue
 
        public void t();
          descriptor: ()V
@@ -115,7 +116,7 @@ public class Queue {
               1: getfield      #4                  // Field rt:Ljava/util/concurrent/locks/ReentrantLock;
               4: invokevirtual #5                  // Method java/util/concurrent/locks/ReentrantLock.lock:()V
 ```
-- 修改代码，将代码进行修改进行指令集优化
+修改代码，将代码进行修改进行指令集优化
 ```java 
 
 public class Queue {
