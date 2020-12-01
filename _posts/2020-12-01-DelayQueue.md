@@ -64,9 +64,11 @@ public class Queue {
 - 使用编译器进行编译，查看未优化之前字节码
 ```java
 
-     renfakai@renfakaideMacBook-Pro  ~/workDir58/demo/src/main/java/com/example/zk  javac Queue.java 
+      // 编译class
+      javac Queue.java 
 
-     renfakai@renfakaideMacBook-Pro  ~/workDir58/demo/src/main/java/com/example/zk  javap -p -v Queue
+      // 查看字节码
+      javap -p -v Queue
 
        public void t();
          descriptor: ()V
