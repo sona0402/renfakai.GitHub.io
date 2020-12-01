@@ -245,3 +245,4 @@ public class ReentrantLock implements Lock, java.io.Serializable {
 
 ### 字节码级别优化
 Doug lea大神就是牛逼，无敌的存在，代码看不明白啊。
+著作权归作者所有，商业转载请联系作者获得授权，非商业转载请注明出处。
