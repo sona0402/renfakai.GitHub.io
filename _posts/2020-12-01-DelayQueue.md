@@ -217,8 +217,8 @@ public class Queue {
    Google查到如果局部变量为final,权限变成了ReadOnly access,为了防止局部向量嘈被重复利用问题。
 -  为何这里` private final PriorityQueue<E> q = new PriorityQueue<E>();` 也是final为啥不在局部变量也命名为final,原因`PriorityQueue`不可变，
    但是其底层数据`transient Object[] queue`在扩容时候会变地址(数组特性)。
+   
 ``` java 
-
 // 对象地址不会变，但是内部数据汇编
 public class PriorityQueue<E> extends AbstractQueue<E>
     implements java.io.Serializable {
@@ -248,6 +248,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
 }
 
 ```
+
 从这里猜，使用了final可能会减少线程缓存数据和主内存数据比较及拉取主内存数据到线程缓存中，也就是经典的内存模型
 可以参考Java并发编程艺术 方腾飞　魏鹏　程晓明著
 
