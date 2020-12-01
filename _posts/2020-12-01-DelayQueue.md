@@ -246,7 +246,7 @@ public class PriorityQueue<E> extends AbstractQueue<E>
 
     private static final int DEFAULT_INITIAL_CAPACITY = 11;
 
-    // 这里内存地址汇编
+    // 这里内存地址会变
     transient Object[] queue; // non-private to simplify nested class access
 }
 
