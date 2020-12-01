@@ -219,6 +219,7 @@ public class Queue {
    但是其底层数据`transient Object[] queue`在扩容时候会变地址(数组特性)。
    
 ``` java 
+
 // 对象地址不会变，但是内部数据汇编
 public class PriorityQueue<E> extends AbstractQueue<E>
     implements java.io.Serializable {
@@ -227,14 +228,6 @@ public class PriorityQueue<E> extends AbstractQueue<E>
 
     private static final int DEFAULT_INITIAL_CAPACITY = 11;
 
-    /**
-     * Priority queue represented as a balanced binary heap: the two
-     * children of queue[n] are queue[2*n+1] and queue[2*(n+1)].  The
-     * priority queue is ordered by comparator, or by the elements'
-     * natural ordering, if comparator is null: For each node n in the
-     * heap and each descendant d of n, n <= d.  The element with the
-     * lowest value is in queue[0], assuming the queue is nonempty.
-     */
     // 这里内存地址汇编
     transient Object[] queue; // non-private to simplify nested class access
 }
@@ -242,7 +235,6 @@ public class PriorityQueue<E> extends AbstractQueue<E>
 // 内部数据不会变
 public class ReentrantLock implements Lock, java.io.Serializable {
     private static final long serialVersionUID = 7373984872572414699L;
-    /** Synchronizer providing all implementation mechanics */
     // 不会改变内存地址
     private final Sync sync;
 }
