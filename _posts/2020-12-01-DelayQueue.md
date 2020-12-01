@@ -109,7 +109,7 @@ public class Queue {
              frame_type = 9 /* same */
 
 ```
-从上面可以看到每次获取锁的时候，都先从局部变量表里面获取index=0 的this进栈后，在获取锁，内容如下：
+从上面可以看到每次获取锁的时候，都先从局部变量表里面获取index=0的this进栈后，在获取锁，内容如下
 ```java 
               0: aload_0
               1: getfield      #4                  // Field rt:Ljava/util/concurrent/locks/ReentrantLock;
