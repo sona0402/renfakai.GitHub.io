@@ -8,11 +8,12 @@ tags: [java]
 description: 设计模式
 ---
 
-解释器设计模式有啥用?语法分析树?个人因为基础还未夯实，暂时不去研究这一块了，写一个系统中的使用。
+解释器设计模式有啥用?语法分析树?<br/>
+个人因为基础还未夯实，暂时不去研究这一块了，写一个系统中的使用。<br/>
 
 ##  问题
  
- 为什么写这篇文章，因为重新梳理算法的时候，想到了之前系统权限和校验的一些瓶颈和错误。
+ 为什么写这篇文章，因为重新梳理算法的时候，想到了之前系统权限和校验的一些瓶颈和错误。<br/>
  
 ### 源代码
 
@@ -63,20 +64,19 @@ public class Evaluate {
 
 [解释器设计模式](https://www.tutorialspoint.com/design_pattern/interpreter_pattern.htm)
 
-Interpreter pattern provides a way to evaluate language grammar or expression. 
-This type of pattern comes under behavioral pattern. 
-This pattern involves implementing an expression interface which tells to interpret a particular context. 
-This pattern is used in SQL parsing, symbol processing engine etc.
+Interpreter pattern provides a way to evaluate language grammar or expression. <br/>
+This type of pattern comes under behavioral pattern. <br/>
+This pattern involves implementing an expression interface which tells to interpret a particular context. <br/>
+This pattern is used in SQL parsing, symbol processing engine etc.<br/>
 
-解释器模式提供了一种评估语言语法或表达的方式,它属于行为设计模式。
-这个设计模式包含一个接口和上下文，可以用于sql解析,和语法引擎等。
+解释器模式提供了一种评估语言语法或表达的方式,它属于行为设计模式。<br/>
+这个设计模式包含一个接口和上下文，可以用于sql解析,和语法引擎等。<br/>
 
 
 ![](.2020-12-07-InterpreterPattern_images/43b96b94.png)
 
-Step 1
-Create an expression interface.
 
+Create an expression interface.
 ```java
 
 // 接口主要是解决上下文问题
@@ -100,7 +100,7 @@ public class TerminalExpression implements Expression {
    }
 }
 
-
+// or Handler
 public class OrExpression implements Expression {
 	 
    private Expression expr1 = null;
@@ -117,6 +117,7 @@ public class OrExpression implements Expression {
    }
 }
 
+// and handler
 public class AndExpression implements Expression {
 	 
    private Expression expr1 = null;
@@ -135,7 +136,7 @@ public class AndExpression implements Expression {
 
 /**
  * 一般情况下别人写代码喜欢用责任链代替解释器
- * 责任链全部都是and 活着 or 好处理如果
+ * 责任链全部都是and 或者 or 
  * <p>
  * (e1 or e2) and e3 and ( e4 or e5)
  * 还是解释器牛逼啊
@@ -187,16 +188,18 @@ public class ExpressionMain {
 
 ```
 
-很多人喜欢用责任链解决这类问题，并且责任链有三中变种。
-A->B->C->D
-1. A处理完直接return 
-2. A处理完B会处理
-3. A处理完其他仅仅查看
+对于流程`A->B->C->D`很多人喜欢用责任链解决这类问题，并且责任链有三中变种。<br/>
+
+*  A处理完直接return <br/>
+*  A处理完B会处理<br/>
+*  A处理完其他仅仅查看<br/>
 
 ### 阿里巴巴案例
-责任链可以处理A and B and C etc  
-           A  or B  or C etc
-阿里巴巴混沌工程中也是这么用的，代码如下         
+责任链可以处理 <br/>
+* A and B and C etc <br/>
+* A  or B  or C etc <br/>
+
+阿里巴巴混沌工程中也是这么用的，代码如下:         
 ```java
 
     package com.alibaba.chaosblade.exec.common.aop.matcher.method;
@@ -273,7 +276,7 @@ public class OrMethodMatcher implements MethodMatcher {
 ```
 ### 如果我们要解决((a or b) and c  and (d or e)) and f 该怎么办呢
 看下面这段代码是不是就是（a or b) and (c and d),我们可以编写很多个插件，然后设定父子级和平级关系。<br/>
-在页面让业务人员进行选择，最后生成一个表达式，后台根据数据上下文和用户进行校验。
+在页面让业务人员进行选择，最后生成一个表达式，后台根据数据上下文和用户进行校验。<br/>
 
 ```
   public static void main(String[] args) {
@@ -294,5 +297,5 @@ public class OrMethodMatcher implements MethodMatcher {
 ### 应用场景
 * OA权限的设计<br/>
 * 用友报税设计<br/>
-* 解释器支持Sql解析，所以支持动态数据计算，使用字节码生成动态类和反射机制。
+* 解释器支持Sql解析，所以支持动态数据计算，使用字节码生成动态类和反射机制。<br/>
 著作权归作者所有，商业转载请联系作者获得授权，非商业转载请注明出处。
