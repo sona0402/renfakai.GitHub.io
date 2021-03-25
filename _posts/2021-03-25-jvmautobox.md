@@ -10,7 +10,7 @@ description: jvm
 
 #   深入理解虚拟机
 
-```java
+```
 package com.sona.jvm;
 
 public class AutoBox {
@@ -34,7 +34,7 @@ public class AutoBox {
 * `System.out.println(c == d);`测试结果为true，原因主要是Integer对`-128~127`使用了享元设计模式，所以底层是同一个对象。
 * `System.out.println(e == f);`测试结果为false，不在享元数据内。
 * ` System.out.println(c == (a + b));`结果为true，查看下面字节码。
-```java
+```
       /**
            *  83 aload_3
            *  84 invokevirtual #8 <java/lang/Integer.intValue>
@@ -52,7 +52,7 @@ public class AutoBox {
   使用c的int值和(a+b)的int值进行对比
 ```
 * ` System.out.println(c.equals(a + b));`这个为true;
-```java
+```
     /**
            * 110 aload_3
            * 111 aload_1
@@ -71,7 +71,7 @@ public class AutoBox {
     所以结果为true
 ```
 * `	System.out.println(g == (a + b));`结果为true;
-```java
+```
    /**
            *  aload 7
            * 157 invokevirtual #11 <java/lang/Long.longValue>
@@ -91,7 +91,7 @@ public class AutoBox {
   将int结果变为long(i2l),进行对比
 ```
 * `System.out.println(g.equals(a + b));`结果为false，因为类型不同。
-```java
+```
    /**
            * 132 aload 7
            * 134 aload_1
