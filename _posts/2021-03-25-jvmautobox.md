@@ -1,14 +1,15 @@
 ---
+
 author: renfakai
 layout: post
 title: jvm-autobox
 date: 2020-12-07
 categories: Java
-tags: [java]
+tags: [jvm]
 description: jvm
----
+----------------
 
-#   深入理解虚拟机
+# 深入理解虚拟机
 
 ```
 package com.sona.jvm;
@@ -31,12 +32,15 @@ public class AutoBox {
     }
 }
 ```
-  其中槽分布数据如下:
-  ![avatar](/img/20210305/local.png)
-* `System.out.println(c == d);`测试结果为true，原因主要是Integer对`-128~127`使用了享元设计模式，所以底层是同一个对象。
+
+其中槽分布数据如下: ![avatar](/img/20210325/local.png)
+* `System.out.println(c ==
+  d);`测试结果为true，原因主要是Integer对`-128~127`使用了享元设计模式，所以底层是同一个对象。
 * `System.out.println(e == f);`测试结果为false，不在享元数据内。
-  ![avatar](/img/20210305/flyweight.png)
-* ` System.out.println(c == (a + b));`结果为true，查看下面字节码，原因是使用c的int值和(a+b)的int值进行对比。
+  ![avatar](/img/20210325/flyweight.png)
+* ` System.out.println(c == (a +
+  b));`结果为true，查看下面字节码，原因是使用c的int值和(a+b)的int值进行对比。
+
 ```
 
  83 aload_3
@@ -52,7 +56,9 @@ public class AutoBox {
 103 iconst_0
 
 ```
+
 * ` System.out.println(c.equals(a + b));`这个为true;
+
 ```
 110 aload_3
 111 aload_1
@@ -70,7 +76,9 @@ public class AutoBox {
     所以结果为true
     
 ```
+
 * `	System.out.println(g == (a + b));`结果为true;
+
 ```
 132 aload 7
 134 invokevirtual #10 <java/lang/Long.longValue>
@@ -87,7 +95,9 @@ public class AutoBox {
 155 iconst_0
   将int结果变为long(i2l),进行对比
 ```
+
 * `System.out.println(g.equals(a + b));`结果为false，因为类型不同。
+
 ```
 162 aload 7
 164 aload_1
@@ -115,7 +125,5 @@ public class AutoBox {
           return false;
       } 
 ```
-
-  
 
 
